@@ -7,8 +7,6 @@ import java.util.*;
 public class ParalellPiMonteCarlo {
 	
 	public static double estimatePi(long precision) {
-		// TODO Auto-generated method stub
-		
 		// circle area / square area =   pi r2 / (2r) 2 =  pi r 2 = 4 r2  = nCircle/nTotal, 
 		// pi= nCircle/nTotal *4
 		
@@ -20,14 +18,11 @@ public class ParalellPiMonteCarlo {
 		for (int i=0;i<precision;i++) {
 		
 			double px = rand.nextDouble();
-			double py = rand.nextDouble();
-			
+			double py = rand.nextDouble();			
 			//if (Math.sqrt(px*px + py*py)<=1)
      		if (px*px + py*py<=1)				
-				nCircle++;
-			
-			nTotal++;
-			
+				nCircle++;			
+			nTotal++;			
 			//System.out.println("-> iter " + i + " px = " + px + " py=" + py +  " pi = " + (nCircle/nTotal)*4.0 );	
 		}
 		
@@ -51,9 +46,7 @@ public class ParalellPiMonteCarlo {
 	        
 	        for (int i=0;i<n;i++) 
 	        	futuresList.add(CompletableFuture.supplyAsync(()->(estimatePi(precision)), executorService));
-
-	        
-	        
+	        	        
 	        CompletableFuture<Void> allFutures = CompletableFuture.allOf(futuresList.toArray(new CompletableFuture[futuresList.size()]));
 	        CompletableFuture<List<Double>> allCompletableFuture = allFutures.thenApply(future -> futuresList.stream().map(completableFuture -> completableFuture.join())
 	                .collect(Collectors.toList()));
@@ -65,17 +58,10 @@ public class ParalellPiMonteCarlo {
 	        for (int i=0; i<finalList.size();i++) {
 	        	
 	        	double subRes=finalList.get(i).doubleValue();
-	        	accum+=subRes;
-	        	
+	        	accum+=subRes;	        	
 		        //System.out.println(subRes);		        
-	        }
-	        
-	        
-	        
+	        }	        
 	        System.out.println(accum/n);		        
-
-	        
-
 	        
 	    } catch (Exception ex) {
 
@@ -87,12 +73,8 @@ public class ParalellPiMonteCarlo {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-
-
-		int cores = Runtime.getRuntime().availableProcessors();
-		
+		int cores = Runtime.getRuntime().availableProcessors();		
 		System.out.println("cores = " + cores);
-
 		parallelProcessing(20000000,cores);
 		
 
